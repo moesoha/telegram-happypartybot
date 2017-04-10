@@ -103,7 +103,7 @@ module.exports={
 		});
 	},
 	busdetail: function (message,api){
-		var 车次=message.text.split(' ')[1];
+		var 车次=message.text.split(/\s+/)[1];
 		if(车次){
 			if(!message.fake){
 				api.sendMessage({
