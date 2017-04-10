@@ -100,7 +100,7 @@ module.exports={
 				api.sendMessage({
 					chat_id: message.chat.id,
 					parse_mode: "HTML",
-					text: 发车时刻表+htmlStringFilter("\r\n要获取车子的详细信息，请"+(message.fake?'私聊机器人 @MoeSoaho_bot 并':'')+"使用“/busdetail <车次>”")
+					text: 发车时刻表+htmlStringFilter("\r\n要获取车子的详细信息，请"+(message.fake?'私聊机器人 @HappyPartyBot 并':'')+"使用“/busdetail <车次>”")
 				}).catch(function (err){
 					console.log(err);
 				});
