@@ -65,6 +65,5 @@ if(argv[0]=='busnew'){
 		if(err){
 			console.error(err);
 		}
-		process.exit();
 	});
 }
