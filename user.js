@@ -23,24 +23,6 @@ var xpos={
 					}
 					callback(null);
 				});
-			},
-			function (callback){
-				db.collection('hahaha').count({
-					uid: useful.id
-				},function (err,count){
-					if(count==0){
-						db.collection('hahaha').insert({
-							uid: useful.id
-						},function (err,result){
-							if(err){
-								console.log(err);
-							}
-							callback(null);
-						});
-					}else{
-						callback(null);
-					}
-				});
 			}
 		],function(err,result){
 			console.log('data of user '+useful.username+' has been updated.');
