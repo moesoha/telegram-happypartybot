@@ -52,7 +52,7 @@ if(argv[0]=='busnew'){
 	},function (callback){
 		console.log(data);
 		api.getChat({
-			chat_id: bus.chats[i];
+			chat_id: bus.chats[i]
 		}).then(function (data){
 			let fakeMessageNow=fakeMessage;
 			fakeMessageNow.chat=data;
