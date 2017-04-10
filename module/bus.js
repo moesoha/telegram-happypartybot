@@ -27,7 +27,12 @@ function htmlStringFilter(str){
 }
 
 module.exports={
-	busnew: function (message,api){
+	busnew: function (message,api,callback){
+		if(!callback){
+			let callback=function (){
+				return 0;
+			};
+		}
 		// console.log(message)
 		var isCensored=(message.text.split(' ')[1]) ? false : true;
 		if(!message.fake){
@@ -100,6 +105,7 @@ module.exports={
 					console.log(err);
 				});
 			}
+			callback();
 		});
 	},
 	busdetail: function (message,api){

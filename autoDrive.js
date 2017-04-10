@@ -12,7 +12,8 @@ var async=require('async');
 var telegram=require('telegram-bot-api');
 var bus={
 	chats: [
-		"@akinabusfield"
+		"@akinabusfield",
+		"@happypartytrain"
 	],
 	orz: require('./module/bus')
 };
@@ -44,18 +45,22 @@ if(argv[0]=='busnew'){
 			fake: true
 		};
 	}
-	
-	async.every(bus.chats,function (chat,callback){
-		api.getChat({
-			chat_id: chat
-		}).then(function (data){
-			console.log(data);
-			let fakeMessageNow=fakeMessage;
-			fakeMessageNow.chat=data;
-			bus.orz.busnew(fakeMessageNow,api);
+
+	let i=0;
+	async.whilst(function (){
+		return(i<bus.chats.length);
+	},function (callback){
+		console.log(data);
+		let fakeMessageNow=fakeMessage;
+		fakeMessageNow.chat=data;
+		bus.orz.busnew(fakeMessageNow,api,function (){
 			callback(null);
 		});
+		i++;
 	},function (err){
-		console.log(err);
+		if(err){
+			console.error(err);
+		}
+		process.exit();
 	});
 }
