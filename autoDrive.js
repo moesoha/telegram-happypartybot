@@ -51,10 +51,14 @@ if(argv[0]=='busnew'){
 		return(i<bus.chats.length);
 	},function (callback){
 		console.log(data);
-		let fakeMessageNow=fakeMessage;
-		fakeMessageNow.chat=data;
-		bus.orz.busnew(fakeMessageNow,api,function (){
-			callback(null);
+		api.getChat({
+			chat_id: bus.chats[i];
+		}).then(function (data){
+			let fakeMessageNow=fakeMessage;
+			fakeMessageNow.chat=data;
+			bus.orz.busnew(fakeMessageNow,api,function (){
+				callback(null);
+			});
 		});
 		i++;
 	},function (err){
