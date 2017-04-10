@@ -50,10 +50,10 @@ if(argv[0]=='busnew'){
 	async.whilst(function (){
 		return(i<bus.chats.length);
 	},function (callback){
-		console.log(data);
 		api.getChat({
 			chat_id: bus.chats[i]
 		}).then(function (data){
+			console.log(data);
 			let fakeMessageNow=fakeMessage;
 			fakeMessageNow.chat=data;
 			bus.orz.busnew(fakeMessageNow,api,function (){
