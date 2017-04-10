@@ -1,0 +1,12 @@
+/*=============================================
+Tianhai Information Technology 2013-2017
+-----------------------------------------------
+Tianhai Information Technology
+	http://tianhai.info/
+Soha King
+	https://soha.moe/
+=============================================*/
+
+module.exports={
+	botToken: 'abcdefg'
+};

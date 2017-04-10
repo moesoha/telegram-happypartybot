@@ -1,0 +1,20 @@
+{
+  "name": "telegram-happypartybot",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "author": "Soha King",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "async": "^2.1.4",
+    "cheerio": "^0.22.0",
+    "magnet-uri": "^5.1.5",
+    "mongodb": "^2.2.2",
+    "mongoskin": "^2.1.0",
+    "request": "^2.79.0",
+    "telegram-bot-api": "^1.2.0"
+  }
+}
