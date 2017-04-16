@@ -33,7 +33,7 @@ module.exports={
 		if(!message.fake){
 			api.sendMessage({
 				chat_id: message.chat.id,
-				text: '稍等，我正在搞的事情需要请求互联网数据，可能会有点慢。'
+				text: '中央正在检索数据，你敢急吗？'
 			}).catch(function (err){
 				console.log(err);
 			});
@@ -111,7 +111,7 @@ module.exports={
 			if(!message.fake){
 				api.sendMessage({
 					chat_id: message.chat.id,
-					text: '稍等，我正在搞的事情需要请求互联网数据，可能会有点慢。'
+					text: '中央正在检索数据，你敢急吗？'
 				});
 			}
 			request({
@@ -123,7 +123,7 @@ module.exports={
 				if(err || res.statusCode!=200){
 					api.sendMessage({
 						chat_id: message.chat.id,
-						text: "完了！搞出事情了！"+(res.statusCode==404?"找不到这个车次！":("服务器返回了 "+res.statusCode))
+						text: "完了！It's angry！"+(res.statusCode==404?"找不到这个车次！":("服务器返回了 "+res.statusCode))
 					}).catch(function (err){
 						console.log(err);
 					});
