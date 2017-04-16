@@ -12,6 +12,6 @@ Just send messages to the bot [@HappyPartyBot](https://t.me/HappyPartyBot) .
 
 It will return a list of bangos of jav that has new magnet links recently.
 
-#### /busdetail <bango>
+#### /busdetail \<bango\>
 
 The cover picture, detailed information and magnet links will be sent to you.
