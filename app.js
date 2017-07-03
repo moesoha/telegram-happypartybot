@@ -48,5 +48,4 @@ api.on('message',function (message){
 
 process.on('uncaughtException',function (err){
 	console.error(err);
-    fs.writeFileSync(('log_unexpected_'+(new Date().getTime().toString())),`Caught exception: ${err}`);
 });

@@ -26,6 +26,15 @@ function htmlStringFilter(str){
 	return s;
 }
 
+function fbId(len){
+	var a=("1234567890qwerTYUIOPtyuiopjklzxcvbnmQWERASDasdfghFGHJKLZXCVBNM").split('');
+	var str=(new Date().getTime().toString())+"--";
+	for(let i=0;i<len;i++){
+		str+=a[Math.floor(Math.random()*a.length)];
+	}
+	return str;
+}
+
 module.exports={
 	busnew: function (message,api,callbackOrz){
 		// console.log(message)
@@ -39,7 +48,7 @@ module.exports={
 			});
 		}
 		request({
-			uri: 公交车调度中心+'/en'+(isCensored?'':'/uncensored'),
+			uri: 公交车调度中心+(isCensored?'':'/uncensored'),
 			headers: {
 				'User-Agent': 'SohaGaoShi/6.66.6666 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'
 			}
@@ -48,14 +57,14 @@ module.exports={
 			var 今天和昨天的新上车架的车=[];
 			$('body').find('div.container-fluid').find('div#waterfall').children('div.item').each(function (num,element){
 				if(isCensored){
-					if($(this).find("button[title='Containing Magnet Links of Newest Torrent']").text()=='Today'){
+					if($(this).find("button[title='包含最新出種的磁力連結']").text()=='今日新種'){
 						今天和昨天的新上车架的车.push({
 							id: $($(this).find('date')[0]).text(),
 							name: $(this).find('img').attr('title'),
 							when: "today"
 						});
 						//console.log('got one: '+$($(this).find('date')[0]).text());
-					}else if($(this).find("button[title='Containing Magnet Links of Newest Torrent']").text()=='Yesterday'){
+					}else if($(this).find("button[title='包含最新出種的磁力連結']").text()=='昨日新種'){
 						今天和昨天的新上车架的车.push({
 							id: $($(this).find('date')[0]).text(),
 							name: $(this).find('img').attr('title'),
@@ -64,7 +73,7 @@ module.exports={
 						//console.log('got one: '+$($(this).find('date')[0]).text());
 					}
 				}else{
-					if($(this).find("button[title='Containing Magnet Links of Newest Torrent']").text()=='This Week'){
+					if($(this).find("button[title='包含最新出種的磁力連結']").text()=='本週新種'){
 						今天和昨天的新上车架的车.push({
 							id: $($(this).find('date')[0]).text(),
 							name: $(this).find('img').attr('title'),
@@ -128,73 +137,85 @@ module.exports={
 						console.log(err);
 					});
 				}else{
-					var $=cheerio.load(body);
-					var 车子的信息=$('.row.movie');
-					var htmlRAW=$.html();
-					var 返回="";
-					var tags=[];
-					api.sendPhoto({
-						chat_id: message.chat.id,
-						photo: 车子的信息.find('img').attr('src'),
-						caption: 车子的信息.find('h3').text()
-					}).catch(function (err){
-						console.log(err);
-					});
-					
-					车子的信息.find('.genre').each(function (num,element){
-						tags.push($(this).children('a').text());
-					});
-					返回+="<b>"+htmlStringFilter($('.container').find('h3').text())+"</b>\r\n标签："+htmlStringFilter(tags.join(', '));
+					try{
+						var $=cheerio.load(body);
+						var 车子的信息=$('.row.movie');
+						var htmlRAW=$.html();
+						var 返回="";
+						var tags=[];
+						api.sendPhoto({
+							chat_id: message.chat.id,
+							photo: 车子的信息.find('img').attr('src'),
+							caption: 车子的信息.find('h3').text()
+						}).catch(function (err){
+							console.log(err);
+						});
+						
+						车子的信息.find('.genre').each(function (num,element){
+							tags.push($(this).children('a').text());
+						});
+						返回+="<b>"+htmlStringFilter($('.container').find('h3').text())+"</b>\r\n标签："+htmlStringFilter(tags.join(', '));
 
-					获取车架号的URI="/ajax/uncledatoolsbyajax.php?gid="+htmlRAW.match(/var gid = (.+?);/)[1]+"&lang=en&uc="+htmlRAW.match(/var uc = (.+?);/)[1];
-					// console.log(获取车架号的URI);
-					request({
-						uri: 公交车调度中心+获取车架号的URI,
-						headers: {
-							'User-Agent': 'SohaGaoShi/6.66.6666 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36',
-							'Referer': 公交车调度中心+"/en/"+车次
-						}
-					},function (err2,res2,body2){
-						//console.log(body2);
-						if(body2.match(/There is no magnet link for this video at the moment\, please wait for others to share it\!/)){
-							api.sendMessage({
-								chat_id: message.chat.id,
-								text: 返回+"\r\n\r\n<i>可惜现在没有能发车的车架号</i>",
-								parse_mode: "HTML"
-							}).catch(function (err){
-								console.log(err);
-							});
-						}else{
-							var $=cheerio.load(body2);
-							var 所有可发车的车架号=[];
-							$('tr').each(function (num,element){
-								if($($(this).find('a')[0]).attr('href') && $($(this).find('a')[0]).attr('href').match(/magnet/)){
-									所有可发车的车架号.push({
-										url: $($(this).find('a')[0]).attr('href'),
-										name: ($($(this).find('a')[0]).text()).replace(/ /g,''),
-										date: ($($(this).find('a')[2]).text()).replace(/ /g,''),
-										size: ($($(this).find('a')[1]).text()).replace(/ /g,'')
-									});
-								}
-							});
-							//console.log(所有可发车的车架号);
-
-							var 车架号和友善的名字们="\r\n";
-							for(var key in 所有可发车的车架号){
-								if(所有可发车的车架号.hasOwnProperty(key)){
-									车架号和友善的名字们+="<b>"+htmlStringFilter(所有可发车的车架号[key].name)+"</b> [<i>"+htmlStringFilter(所有可发车的车架号[key].size)+"</i>, <i>"+htmlStringFilter(所有可发车的车架号[key].date)+"</i>]: "+htmlStringFilter(magnetUri.decode(所有可发车的车架号[key].url).infoHash)+"\r\n";
-								}
+						获取车架号的URI="/ajax/uncledatoolsbyajax.php?gid="+htmlRAW.match(/var gid = (.+?);/)[1]+"&lang=en&uc="+htmlRAW.match(/var uc = (.+?);/)[1];
+						// console.log(获取车架号的URI);
+						request({
+							uri: 公交车调度中心+获取车架号的URI,
+							headers: {
+								'User-Agent': 'SohaGaoShi/6.66.6666 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36',
+								'Referer': 公交车调度中心+"/en/"+车次
 							}
+						},function (err2,res2,body2){
+							//console.log(body2);
+							if(body2.match(/There is no magnet link for this video at the moment\, please wait for others to share it\!/)){
+								api.sendMessage({
+									chat_id: message.chat.id,
+									text: 返回+"\r\n\r\n<i>可惜现在没有能发车的车架号</i>",
+									parse_mode: "HTML"
+								}).catch(function (err){
+									console.log(err);
+								});
+							}else{
+								var $=cheerio.load(body2);
+								var 所有可发车的车架号=[];
+								$('tr').each(function (num,element){
+									if($($(this).find('a')[0]).attr('href') && $($(this).find('a')[0]).attr('href').match(/magnet/)){
+										所有可发车的车架号.push({
+											url: $($(this).find('a')[0]).attr('href'),
+											name: ($($(this).find('a')[0]).text()).replace(/ /g,''),
+											date: ($($(this).find('a')[2]).text()).replace(/ /g,''),
+											size: ($($(this).find('a')[1]).text()).replace(/ /g,'')
+										});
+									}
+								});
+								//console.log(所有可发车的车架号);
 
-							api.sendMessage({
-								chat_id: message.chat.id,
-								text: 返回+"\r\n"+车架号和友善的名字们,
-								parse_mode: "HTML"
-							}).catch(function (err){
-								console.log(err);
-							});
-						}
-					});
+								var 车架号和友善的名字们="\r\n";
+								for(var key in 所有可发车的车架号){
+									if(所有可发车的车架号.hasOwnProperty(key)){
+										车架号和友善的名字们+="<b>"+htmlStringFilter(所有可发车的车架号[key].name)+"</b> [<i>"+htmlStringFilter(所有可发车的车架号[key].size)+"</i>, <i>"+htmlStringFilter(所有可发车的车架号[key].date)+"</i>]: "+htmlStringFilter(magnetUri.decode(所有可发车的车架号[key].url).infoHash)+"\r\n";
+									}
+								}
+
+								api.sendMessage({
+									chat_id: message.chat.id,
+									text: 返回+"\r\n"+车架号和友善的名字们,
+									parse_mode: "HTML"
+								}).catch(function (err){
+									console.log(err);
+								});
+							}
+						});
+					}catch(err){
+						let feedbackId=fbId(24);
+						api.sendMessage({
+							chat_id: message.chat.id,
+							text: "翻车！鬼知道发生了什么事！(反馈id："+feedbackId+")",
+							parse_mode: "HTML"
+						}).catch(function (err){
+							console.error(err);
+						});
+						console.error("id:: "+feedbackId+" :: "+err+"\n");
+					}
 				}
 			});
 		}else{
