@@ -1,20 +1,22 @@
 {
   "name": "telegram-happypartybot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "app.js",
   "scripts": {
     "test": "node app.js"
   },
-  "author": "Soha King",
+  "author": "Soha Jin<soha@lohu.info>",
   "license": "MIT",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moesoha/telegram-happypartybot.git"
+  },
   "dependencies": {
-    "async": "^2.1.4",
-    "cheerio": "^0.22.0",
-    "magnet-uri": "^5.1.5",
-    "mongodb": "^2.2.2",
-    "mongoskin": "^2.1.0",
-    "request": "^2.79.0",
-    "telegram-bot-api": "^1.2.0"
+    "cheerio": "^1.0.0-rc.2",
+    "magnet-uri": "^5.1.8",
+    "request": "^2.86.0",
+    "request-promise": "^4.2.2",
+    "telegraf": "^3.21.1"
   }
 }

@@ -8,5 +8,6 @@ Soha Jin
 =============================================*/
 
 module.exports={
-	botToken: 'abcdefg'
+	getInfo: require('./getInfo'),
+	getMagnetLink: require('./getMagnetLink')
 };

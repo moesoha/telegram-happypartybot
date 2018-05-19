@@ -1,51 +1,20 @@
 /*=============================================
-Tianhai Information Technology 2013-2017
+Tianhai Information Technology 2013-2018
 -----------------------------------------------
 Tianhai Information Technology
 	http://tianhai.info/
-Soha King
-	https://soha.moe/
+Soha Jin
+	https://sohaj.in/
 =============================================*/
 
 var _config=require('./config');
-var telegram=require('telegram-bot-api');
-var user=require('./user');
-var commandsProcess=require('./commands');
-var fs=require('fs');
-var api=new telegram({
-	token: _config.botToken,
-	updates: {
-		enabled: true
-	}
-});
+var Telegraf=require('telegraf');
 
-console.log('TelegramBot started.');
-api.getMe().then(function (data){
-	console.log(data);
-}).catch(function (err){
-    console.log(err);
-});
+const bot=new Telegraf(_config.botToken);
 
-api.on('message',function (message){
+bot.use(function ({message}){
 	console.log(message);
-	if(message && message.hasOwnProperty('text')){
-		if(message.text.indexOf('/')==0){
-			var atLocation=message.text.indexOf('@');
-			if(atLocation==-1){
-				var command=message.text.substr(1);
-			}else{
-				var command=message.text.substr(1,atLocation-1);
-			}
-			command=command.split(' ')[0];
-			console.log(message.from.username+' sent a command: '+command);
-
-			user.flushUserInfo(message,function (){
-				commandsProcess(command,message,api);
-			});
-		}
-	}
 });
 
-process.on('uncaughtException',function (err){
-	console.error(err);
-});
+bot.startPolling();
+console.log('TelegramBot started.');
