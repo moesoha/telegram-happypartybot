@@ -67,7 +67,7 @@ module.exports.markdown=function(list=[],urlPrefix=''){
 	/*
 		URL Prefix example
 		------------------------
-		http://telegram.me/HappyPartyBot?start=busdetail-----STAR-912
+		http://t.me/HappyPartyBot?start=busdetail-----BANGO-2333
 
 		Return Content
 		------------------------

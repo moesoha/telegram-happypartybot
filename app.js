@@ -22,7 +22,7 @@ tg.getMe().then(function (data){
 	me=data;
 	console.log(me);
 
-	//注册所有路由
+	// 注册所有 command
 	fs.readdirSync(path.join(__dirname,"module/command")).forEach(function(file){
 		if((file.split('.')[1].toLowerCase())!=='js'){
 			return;
@@ -35,6 +35,26 @@ tg.getMe().then(function (data){
 			fun(context);
 		});
 	});
+
+	bot.on('inline_query',function ({inlineQuery,answerInlineQuery}){
+		// console.log(inlineQuery);
+		if(inlineQuery.query.trim().length>0){
+			answerInlineQuery([{
+				type: 'article',
+				id: 'url',
+				title: inlineQuery.query,
+				description: `发送一个搜索 ${inlineQuery.query} 的链接。`,
+				input_message_content: {
+					message_text: ` [点击来搜索 ${inlineQuery.query}](https://t.me/${me.username}?start=busdetail-----${inlineQuery.query}) `,
+					parse_mode: 'Markdown'
+				}
+			}]);
+		}
+	});
+
+	bot.on('chosen_inline_result',function ({chosenInlineResult}){
+		console.log(chosenInlineResult);
+	})
 
 	bot.start(function (context){
 		context.botBasicInfo=me;
