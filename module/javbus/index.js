@@ -9,5 +9,6 @@ Soha Jin
 
 module.exports={
 	getInfo: require('./getInfo'),
-	getMagnetLink: require('./getMagnetLink')
+	getMagnetLink: require('./getMagnetLink'),
+	getNewMagnetList: require('./getNewMagnetList')
 };

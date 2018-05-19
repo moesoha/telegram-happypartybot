@@ -1,5 +1,5 @@
 let argv=process.argv.slice(2);
-let {getInfo,getMagnetLink}=require('./');
+let {getInfo,getMagnetLink,getNewMagnetList}=require('./');
 
 let isOver=false;
 
@@ -9,6 +9,11 @@ let isOver=false;
 		console.log(info);
 		let maglink=await getMagnetLink(info.magnetRequestUrl);
 		console.log(maglink);
+	}else{
+		let list=await getNewMagnetList();
+		console.log('censored',list);
+		let listUn=await getNewMagnetList(true);
+		console.log('uncensored',listUn);
 	}
 
 	isOver=true;

@@ -20,6 +20,7 @@ let commandList={};
 
 tg.getMe().then(function (data){
 	me=data;
+	console.log(me);
 
 	//注册所有路由
 	fs.readdirSync(path.join(__dirname,"module/command")).forEach(function(file){
@@ -29,10 +30,14 @@ tg.getMe().then(function (data){
 		let fun=require("./module/command/"+file);
 		let cmd=file.split('.')[0];
 		commandList[cmd]=fun;
-		bot.command('/'+cmd,fun);
+		bot.command('/'+cmd,function (context){
+			context.botBasicInfo=me;
+			fun(context);
+		});
 	});
 
 	bot.start(function (context){
+		context.botBasicInfo=me;
 		let {message}=context;
 		if(message){
 			let cmd="";
