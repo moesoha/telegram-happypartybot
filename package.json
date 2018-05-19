@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "colors": "^1.2.5",
     "magnet-uri": "^5.1.8",
     "request": "^2.86.0",
     "request-promise": "^4.2.2",

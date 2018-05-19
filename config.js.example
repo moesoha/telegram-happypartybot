@@ -8,5 +8,6 @@ Soha Jin
 =============================================*/
 
 module.exports={
-	botToken: 'abcdefg'
+	botToken: 'abcdefg',
+	botUsername: 'HappyPartyBot'
 };
