@@ -9,7 +9,6 @@ Soha Jin
 
 const 调度台=require('./request');
 const cheerio=require('cheerio');
-const 车架号解析器=require('magnet-uri');
 
 module.exports=async function (获取车架号的相对地址){
 	let 车架号信息页面;
