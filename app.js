@@ -30,10 +30,13 @@ tg.getMe().then(function (data){
 		let fun=require("./module/command/"+file);
 		let cmd=file.split('.')[0];
 		commandList[cmd]=fun;
-		bot.command('/'+cmd,function (context){
+
+		let regFunc=function (context){
 			context.botBasicInfo=me;
 			fun(context);
-		});
+		};
+		bot.command(`/${cmd}`,regFunc);
+		bot.command(`/${cmd}@${me.username}`,regFunc);
 	});
 
 	bot.on('inline_query',function ({inlineQuery,answerInlineQuery}){
