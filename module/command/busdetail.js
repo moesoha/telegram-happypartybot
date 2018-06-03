@@ -31,6 +31,10 @@ module.exports=async function ({message,reply,replyWithMarkdown,replyWithPhoto})
 		`hash`
 	*/
 	let args=message.text.split(' ');
+	if(args.length<2){
+		replyWithMarkdown('请使用 `/busdetail 车次号` 查询。');
+		return;
+	}
 	reply('中央正在检索数据……');
 	try{
 		let info=await javbus.getInfo(args[1]);
